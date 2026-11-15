@@ -38,13 +38,13 @@ Platform multi-tenant untuk banyak LBB: website publik, pendaftaran siswa, jadwa
 
 ### Tahap 0: Fondasi
 
-- [ ] Setup Laravel + Inertia + koneksi Supabase Postgres
-- [ ] Tabel `tenants`, relasi user-tenant, `tenant_id` di semua tabel
-- [ ] Global scope + resolusi tenant dari subdomain
-- [ ] Auth: login, register, reset password
-- [ ] Role dan permission per tenant
-- [ ] Panel super admin: daftar tenant, aktif/nonaktif
-- [ ] Test otomatis: data antar-tenant tidak bocor
+- [x] Setup Laravel + Inertia + koneksi Supabase Postgres
+- [x] Tabel `tenants`, relasi user-tenant, `tenant_id` di semua tabel
+- [x] Global scope + resolusi tenant dari subdomain
+- [x] Auth: login, register, reset password
+- [x] Role dan permission per tenant
+- [x] Panel super admin: daftar tenant, aktif/nonaktif
+- [x] Test otomatis: data antar-tenant tidak bocor
 
 ### Tahap 1: MVP untuk LBB pilot
 
