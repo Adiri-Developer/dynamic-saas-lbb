@@ -48,12 +48,12 @@ Platform multi-tenant untuk banyak LBB: website publik, pendaftaran siswa, jadwa
 
 ### Tahap 1: MVP untuk LBB pilot
 
-- [ ] Onboarding LBB: daftar, buat lembaga, pilih subdomain, isi profil dan logo
+- [x] Onboarding LBB: daftar, buat lembaga, pilih subdomain, isi profil dan logo
 - [ ] CRUD siswa, tutor, program, kelas
 - [ ] Jadwal kelas (tutor, ruang, hari/jam)
 - [ ] Form pendaftaran online + daftar pendaftar (baru, dihubungi, terdaftar)
 - [ ] Landing page publik per tenant: profil, program, tutor, kontak, tombol WhatsApp
-- [ ] Branding dasar: logo dan warna
+- [x] Branding dasar: logo dan warna
 
 ### Tahap 2: Operasional harian
 

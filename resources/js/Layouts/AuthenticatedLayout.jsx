@@ -6,7 +6,8 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
+    const { auth, tenant } = usePage().props;
+    const user = auth.user;
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -17,10 +18,15 @@ export default function AuthenticatedLayout({ header, children }) {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
-                            <div className="flex shrink-0 items-center">
+                            <div className="flex shrink-0 items-center space-x-3">
                                 <Link href="/">
                                     <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
                                 </Link>
+                                {tenant && (
+                                    <span className="hidden md:inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
+                                        {tenant.name}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -30,6 +36,21 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
+                                {tenant ? (
+                                    <NavLink
+                                        href={route('tenant.settings.edit')}
+                                        active={route().current('tenant.settings.edit')}
+                                    >
+                                        Profil & Branding
+                                    </NavLink>
+                                ) : (
+                                    <NavLink
+                                        href={route('onboarding.create')}
+                                        active={route().current('onboarding.create')}
+                                    >
+                                        Onboarding LBB
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 
@@ -134,6 +155,21 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        {tenant ? (
+                            <ResponsiveNavLink
+                                href={route('tenant.settings.edit')}
+                                active={route().current('tenant.settings.edit')}
+                            >
+                                Profil & Branding
+                            </ResponsiveNavLink>
+                        ) : (
+                            <ResponsiveNavLink
+                                href={route('onboarding.create')}
+                                active={route().current('onboarding.create')}
+                            >
+                                Onboarding LBB
+                            </ResponsiveNavLink>
+                        )}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">

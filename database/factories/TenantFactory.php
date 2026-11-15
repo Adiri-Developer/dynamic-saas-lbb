@@ -24,6 +24,11 @@ class TenantFactory extends Factory
             'name' => $name,
             'slug' => Str::slug($name).'-'.fake()->unique()->randomNumber(4),
             'domain' => null,
+            'phone' => fake()->phoneNumber(),
+            'address' => fake()->address(),
+            'description' => fake()->sentence(),
+            'logo_path' => null,
+            'primary_color' => '#2563eb',
             'is_active' => true,
             'settings' => [],
         ];

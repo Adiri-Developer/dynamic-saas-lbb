@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TenantSettingsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -12,6 +14,15 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/onboarding', [OnboardingController::class, 'create'])->name('onboarding.create');
+    Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
+    Route::get('/onboarding/check-subdomain', [OnboardingController::class, 'checkSubdomain'])->name('onboarding.check-subdomain');
+
+    Route::get('/tenant/settings', [TenantSettingsController::class, 'edit'])->name('tenant.settings.edit');
+    Route::post('/tenant/settings', [TenantSettingsController::class, 'update'])->name('tenant.settings.update');
 });
 
 Route::get('/dashboard', function () {

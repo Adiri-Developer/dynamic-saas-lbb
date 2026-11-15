@@ -42,6 +42,11 @@ class HandleInertiaRequests extends Middleware
                 'name' => $tenant->name,
                 'slug' => $tenant->slug,
                 'domain' => $tenant->domain,
+                'phone' => $tenant->phone,
+                'address' => $tenant->address,
+                'description' => $tenant->description,
+                'logo_url' => $tenant->logo_url,
+                'primary_color' => $tenant->primary_color ?? '#2563eb',
             ] : null,
         ];
     }

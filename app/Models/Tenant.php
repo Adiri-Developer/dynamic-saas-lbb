@@ -6,6 +6,7 @@ use Database\Factories\TenantFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Tenant extends Model
 {
@@ -21,9 +22,35 @@ class Tenant extends Model
         'name',
         'slug',
         'domain',
+        'phone',
+        'address',
+        'description',
+        'logo_path',
+        'primary_color',
         'is_active',
         'settings',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var list<string>
+     */
+    protected $appends = [
+        'logo_url',
+    ];
+
+    /**
+     * Get the tenant's public logo URL.
+     */
+    public function getLogoUrlAttribute(): ?string
+    {
+        if (empty($this->logo_path)) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($this->logo_path);
+    }
 
     /**
      * Get the attributes that should be cast.

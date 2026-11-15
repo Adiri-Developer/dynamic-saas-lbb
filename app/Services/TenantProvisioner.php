@@ -29,6 +29,11 @@ class TenantProvisioner
             'name' => $name,
             'slug' => $finalSlug,
             'domain' => $attributes['domain'] ?? null,
+            'phone' => $attributes['phone'] ?? null,
+            'address' => $attributes['address'] ?? null,
+            'description' => $attributes['description'] ?? null,
+            'logo_path' => $attributes['logo_path'] ?? null,
+            'primary_color' => $attributes['primary_color'] ?? '#2563eb',
             'is_active' => $attributes['is_active'] ?? true,
             'settings' => $attributes['settings'] ?? [],
         ]);

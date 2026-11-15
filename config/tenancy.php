@@ -42,8 +42,11 @@ return [
     |
     */
     'default_roles' => [
-        'owner' => 'Tenant Owner',
-        'admin' => 'Administrator',
+        'owner' => 'Pemilik Lembaga',
+        'admin' => 'Administrator Lembaga',
+        'tutor' => 'Tutor',
+        'student' => 'Siswa',
+        'parent' => 'Orang Tua',
         'member' => 'Team Member',
     ],
 ];
