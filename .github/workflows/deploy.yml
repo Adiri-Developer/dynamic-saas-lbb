@@ -62,7 +62,7 @@ jobs:
           # Volume mapping untuk storage agar file upload tidak hilang saat deploy ulang
           docker run -d \
             --name saas-lbb \
-            -p 9000:9000 \
+            -p 127.0.0.1:9000:9000 \
             --env-file /var/www/saas-lbb/.env \
             -v /var/www/saas-lbb/storage:/app/storage \
             ${{ secrets.DOCKERHUB_USERNAME }}/saas-lbb:latest
