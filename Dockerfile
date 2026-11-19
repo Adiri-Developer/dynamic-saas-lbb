@@ -1,40 +1,24 @@
-FROM php:8.3-fpm-bookworm AS php-base
+FROM dunglas/frankenphp:1-php8.3-bookworm AS php-base
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg62-turbo-dev \
-    libonig-dev \
-    libpng-dev \
-    libpq-dev \
-    libsqlite3-dev \
-    libzip-dev \
-    unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j"$(nproc)" \
-        bcmath gd intl mbstring opcache pcntl pdo_mysql pdo_pgsql pdo_sqlite zip \
-    && rm -rf /var/lib/apt/lists/*
+RUN install-php-extensions bcmath gd intl mbstring opcache pcntl pdo_mysql pdo_pgsql pdo_sqlite zip
 
-WORKDIR /var/www/html
+WORKDIR /app
 
 FROM php-base AS dependencies
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY composer.json composer.lock ./
-
 RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction --prefer-dist --no-progress
 
 COPY . .
-
 RUN composer dump-autoload --no-dev --optimize --no-interaction \
-    && php artisan filament:assets --no-interaction
+    && php artisan filament:assets --no-interaction \
+    && php artisan storage:link --no-interaction
 
 FROM node:22-bookworm-slim AS assets
 
 WORKDIR /app
 COPY package.json package-lock.json ./
-
-# The existing dependency tree requires legacy peer dependency resolution.
 RUN npm ci --legacy-peer-deps
 
 COPY . .
@@ -48,14 +32,12 @@ ENV APP_ENV=production \
 
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-COPY --from=dependencies /var/www/html /var/www/html
+COPY --from=dependencies /app /app
 COPY --from=assets /app/public/build ./public/build
+COPY docker/Caddyfile /etc/frankenphp/Caddyfile
+COPY --chmod=755 docker/entrypoint.sh /usr/local/bin/app-entrypoint
 
-RUN mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R ug+rwX storage bootstrap/cache
-
-# Nginx must serve this image's public files and forward FastCGI to port 9000.
 EXPOSE 9000
 
-CMD ["php-fpm"]
+ENTRYPOINT ["/usr/local/bin/app-entrypoint"]
+CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile", "--adapter", "caddyfile"]
